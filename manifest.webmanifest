@@ -1,0 +1,14 @@
+{
+  "name": "Izzy's Numbers",
+  "short_name": "Izzy's Numbers",
+  "description": "A glowing Year 1 maths adventure with a unicorn and a dragon.",
+  "start_url": "./",
+  "display": "fullscreen",
+  "orientation": "any",
+  "background_color": "#140c35",
+  "theme_color": "#140c35",
+  "icons": [
+    { "src": "icons/icon.svg", "sizes": "any", "type": "image/svg+xml" },
+    { "src": "icons/apple-touch-icon.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

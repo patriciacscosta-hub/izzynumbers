@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="en-GB">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
+  <title>Izzy's Numbers</title>
+  <meta name="description" content="A glowing Year 1 maths adventure with a unicorn and a dragon.">
+  <meta name="theme-color" content="#140c35">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Izzy's Numbers">
+  <link rel="icon" href="icons/icon.svg" type="image/svg+xml">
+  <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+  <link rel="manifest" href="manifest.webmanifest">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="bg" aria-hidden="true"></div>
+  <div class="mist m1" aria-hidden="true"></div>
+  <div class="mist m2" aria-hidden="true"></div>
+  <div class="mist m3" aria-hidden="true"></div>
+  <canvas id="flies" aria-hidden="true"></canvas>
+
+  <main id="app">
+    <!-- Title -->
+    <section id="title" class="screen on">
+      <h1 class="logo">Izzy's <span>Numbers</span></h1>
+      <p class="tag">Choose a friend for your maths adventure</p>
+      <div class="pick">
+        <button class="pal" data-c="unicorn" aria-label="Luma the Unicorn">
+          <div class="halo"></div><div class="art" id="pick-unicorn"></div>
+          <span class="pal-name">Luma <small>the Unicorn</small></span>
+        </button>
+        <button class="pal" data-c="dragon" aria-label="Ember the Dragon">
+          <div class="halo warm"></div><div class="art" id="pick-dragon"></div>
+          <span class="pal-name">Ember <small>the Dragon</small></span>
+        </button>
+      </div>
+      <button class="big-btn" id="go-btn">Let's go!</button>
+      <div class="toggles">
+        <button class="toggle" id="t-sound" aria-pressed="true"></button>
+        <button class="toggle" id="t-voice" aria-pressed="true"></button>
+      </div>
+    </section>
+
+    <!-- Map -->
+    <section id="map" class="screen">
+      <header class="bar">
+        <button class="icon-btn" id="map-home" aria-label="Back to start"></button>
+        <div class="journey" id="journey"></div>
+        <div class="total" id="total"></div>
+      </header>
+      <div class="world-box">
+        <div class="world-wrap" id="world-wrap"><div class="world-inner" id="world"></div></div>
+        <div class="lands">
+          <button class="land" data-land="start">Unicorn Meadows</button>
+          <button class="land warm" data-land="end">Dragon Peaks</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Play -->
+    <section id="play" class="screen">
+      <header class="bar">
+        <button class="icon-btn" id="play-map" aria-label="Back to the map"></button>
+        <div class="progress" id="progress"></div>
+        <button class="icon-btn" id="play-say" aria-label="Hear the question again"></button>
+      </header>
+      <div class="stage">
+        <div class="buddy" id="buddy-wrap">
+          <div class="halo"></div><div class="art" id="buddy"></div>
+          <div class="bubble" id="bubble"></div>
+        </div>
+        <div class="panel glass" id="panel">
+          <div class="prompt" id="prompt"></div>
+          <div class="big" id="big"></div>
+          <div class="visual" id="visual"></div>
+        </div>
+      </div>
+      <div class="choices" id="choices"></div>
+    </section>
+
+    <!-- Finished a realm -->
+    <section id="win" class="screen">
+      <div class="win-card glass">
+        <h2 id="win-title"></h2>
+        <div class="win-art">
+          <div class="halo"></div>
+          <div class="art" id="win-a"></div>
+          <div class="art" id="win-b"></div>
+        </div>
+        <div class="win-stars" id="win-stars"></div>
+        <div class="journey" id="win-journey"></div>
+        <div class="row">
+          <button class="big-btn" id="win-again">Play again</button>
+          <button class="big-btn alt" id="win-map">New place</button>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <canvas id="fx" aria-hidden="true"></canvas>
+
+  <script src="js/art.js"></script>
+  <script src="js/sound.js"></script>
+  <script src="js/fx.js"></script>
+  <script src="js/realms.js"></script>
+  <script src="js/game.js"></script>
+</body>
+</html>
