@@ -12,7 +12,7 @@
   const NEARLY = ['Nearly! Have another go.', 'Ooh, not quite. Try again!', 'Good try! Look again.'];
 
   // ---------- saved progress ----------
-  const st = Object.assign({ companion: 'unicorn', stars: {}, sound: true, voice: true }, load());
+  const st = Object.assign({ companion: 'unicorn', stars: {}, sound: true }, load());
   function load() { try { return JSON.parse(localStorage.getItem(KEY) || '{}'); } catch (e) { return {}; } }
   function save() { try { localStorage.setItem(KEY, JSON.stringify(st)); } catch (e) { /* private mode etc. */ } }
 
@@ -20,7 +20,6 @@
   const screens = ['title', 'map', 'play', 'win'];
   function show(name) {
     for (const s of screens) $('#' + s).classList.toggle('on', s === name);
-    if (name !== 'play') S.hush();
   }
 
   function friend() { return FRIENDS[st.companion]; }
@@ -36,8 +35,7 @@
   function renderToggles() {
     const t = (el, on, icon, label) => { el.innerHTML = `${icon}${on ? '' : `<span class="slash">${A.icon.off}</span>`}<span>${label}</span>`; el.setAttribute('aria-pressed', on); el.classList.toggle('off', !on); };
     t($('#t-sound'), st.sound, A.icon.note, 'Sounds');
-    t($('#t-voice'), st.voice, A.icon.speak, 'Read aloud');
-    S.enabled = st.sound; S.voice = st.voice;
+    S.enabled = st.sound;
   }
 
   // ---------- world map ----------
@@ -132,7 +130,6 @@
       b.addEventListener('click', () => choose(b, c));
       box.appendChild(b);
     });
-    setTimeout(() => cur && cur.q === q && S.say(q.say || q.prompt), 450);
   }
 
   function choose(btn, c) {
@@ -144,7 +141,7 @@
       FX.burstEl(btn);
       mood('happy');
       const p = pick(PRAISE);
-      bubble(p); S.say(p);
+      bubble(p);
       cur.i++;
       renderProgress();
       setTimeout(() => (cur.i >= ROUNDS ? finish() : nextQuestion()), 1500);
@@ -161,10 +158,10 @@
       const k = cur.q.choices.findIndex((x) => x.value === cur.q.answer);
       $('#choices').children[k].classList.add('reveal');
       const m = 'Here it is! Tap the glowing one.';
-      bubble(m); S.say(m);
+      bubble(m);
     } else {
       const m = pick(NEARLY);
-      bubble(m); S.say(m);
+      bubble(m);
     }
   }
 
@@ -188,8 +185,6 @@
     $('#win-stars').innerHTML = [1, 2, 3].map((n) => `<span style="--d:${n * 260}ms">${A.star(n <= stars)}</span>`).join('');
     show('win');
     S.win();
-    const say = `You found ${stars} ${stars === 1 ? 'star' : 'stars'} in ${cur.realm.name}! Luma and Ember are so proud of you.`;
-    setTimeout(() => S.say(say), 900);
     [0, 350, 700].forEach((t) => setTimeout(() => FX.burst(innerWidth * (0.3 + Math.random() * 0.4), innerHeight * (0.3 + Math.random() * 0.2), 40), t));
   }
 
@@ -217,7 +212,6 @@
     FX.init();
     $('#map-home').innerHTML = A.icon.home;
     $('#play-map').innerHTML = A.icon.map;
-    $('#play-say').innerHTML = A.icon.speak;
     renderTitle();
 
     // iPad needs a tap before it will play any sound.
@@ -227,22 +221,18 @@
     document.querySelectorAll('.pal').forEach((b) => b.addEventListener('click', () => {
       st.companion = b.dataset.c; save(); renderTitle(); S.tap();
       FX.burstEl(b, 20);
-      S.say(b.dataset.c === 'unicorn' ? 'Hello! I am Luma the unicorn.' : 'Hello! I am Ember the dragon.');
     }));
-    $('#go-btn').addEventListener('click', () => { S.tap(); renderMap(); show('map'); S.say('Where shall we explore?'); });
+    $('#go-btn').addEventListener('click', () => { S.tap(); renderMap(); show('map'); });
     $('#t-sound').addEventListener('click', () => { st.sound = !st.sound; save(); renderToggles(); S.tap(); });
-    $('#t-voice').addEventListener('click', () => { st.voice = !st.voice; save(); renderToggles(); if (!st.voice) S.hush(); });
     $('#map-home').addEventListener('click', () => { S.tap(); renderTitle(); show('title'); });
     $('#world').addEventListener('click', (e) => { const r = e.target.closest('.node'); if (r) { S.tap(); startRealm(r.dataset.id); } });
     document.querySelectorAll('.land').forEach((b) => b.addEventListener('click', () => {
       const wrap = $('#world-wrap');
       wrap.scrollTo({ left: b.dataset.land === 'start' ? 0 : wrap.scrollWidth, behavior: 'smooth' });
       S.tap();
-      S.say(b.dataset.land === 'start' ? 'Unicorn Meadows' : 'Dragon Peaks');
     }));
     addEventListener('resize', () => { if ($('#map').classList.contains('on')) renderMap(); });
     $('#play-map').addEventListener('click', () => { S.tap(); cur = null; renderMap(); show('map'); });
-    $('#play-say').addEventListener('click', () => cur && S.say(cur.q.say || cur.q.prompt));
     $('#win-again').addEventListener('click', () => { S.tap(); startRealm(cur.realm.id); });
     $('#win-map').addEventListener('click', () => { S.tap(); cur = null; renderMap(); show('map'); });
 

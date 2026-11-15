@@ -64,14 +64,14 @@ button { font: inherit; color: inherit; border: 0; background: none; cursor: poi
 @keyframes pulse { 50% { opacity: 0.6; transform: scale(0.94); } }
 .blink { transform-box: fill-box; transform-origin: center; animation: blink 5.5s infinite; }
 @keyframes blink { 0%, 93%, 100% { transform: scaleY(1); } 96% { transform: scaleY(0.1); } }
-.d-wing { transform-box: view-box; transform-origin: 94px 104px; animation: flap 2.6s ease-in-out infinite; }
-.d-wing-back { transform-box: view-box; transform-origin: 100px 104px; animation: flap 2.6s ease-in-out infinite 0.12s; }
+.d-wing { transform-box: view-box; transform-origin: 104px 112px; animation: flap 2.6s ease-in-out infinite; }
+.d-wing-back { transform-box: view-box; transform-origin: 116px 104px; animation: flap 2.6s ease-in-out infinite 0.12s; }
 @keyframes flap { 50% { transform: rotate(-13deg); } }
 .d-tail, .u-tail { transform-box: view-box; animation: sway 3.4s ease-in-out infinite; }
-.d-tail { transform-origin: 76px 166px; }
-.u-tail { transform-origin: 70px 118px; }
+.d-tail { transform-origin: 98px 178px; }
+.u-tail { transform-origin: 76px 126px; }
 @keyframes sway { 50% { transform: rotate(5deg); } }
-.u-mane { transform-box: view-box; transform-origin: 170px 60px; animation: mane 3.4s ease-in-out infinite; }
+.u-mane { transform-box: view-box; transform-origin: 166px 44px; animation: mane 3.4s ease-in-out infinite; }
 @keyframes mane { 50% { transform: skewX(-3deg); } }
 .sparkle { animation: twinkle 2.2s ease-in-out infinite; }
 @keyframes twinkle { 50% { opacity: 0.2; } }

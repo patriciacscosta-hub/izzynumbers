@@ -1,7 +1,7 @@
-/* Izzy's Numbers - chimes made with Web Audio, and a British voice to read questions aloud. */
+/* Izzy's Numbers - chimes made with Web Audio. */
 (function (IZ) {
   'use strict';
-  const S = (IZ.sound = { enabled: true, voice: true });
+  const S = (IZ.sound = { enabled: true });
   let ctx = null, master = null;
 
   function ac() {
@@ -44,38 +44,6 @@
   S.wrong = () => { tone(311, 0, 0.35, 0.1, 'triangle'); tone(262, 0.14, 0.45, 0.08, 'triangle'); };
   S.win = () => [523.25, 659.25, 783.99, 1046.5, 783.99, 1046.5, 1318.5, 1567.98].forEach((f, i) => bell(f, i * 0.12, 1.2, 0.15));
 
-  // iPad only allows sound and speech after a tap, so the first tap calls this.
-  S.unlock = () => {
-    ac();
-    if ('speechSynthesis' in window) {
-      try { const u = new SpeechSynthesisUtterance(' '); u.volume = 0; speechSynthesis.speak(u); } catch (e) { /* ignore */ }
-    }
-  };
-
-  let voices = [];
-  const loadVoices = () => { try { voices = speechSynthesis.getVoices() || []; } catch (e) { voices = []; } };
-  if ('speechSynthesis' in window) { loadVoices(); speechSynthesis.onvoiceschanged = loadVoices; }
-  function voice() {
-    const gb = voices.filter((v) => /en[-_]GB/i.test(v.lang));
-    for (const name of ['Serena', 'Kate', 'Stephanie', 'Martha', 'Google UK English Female', 'Daniel']) {
-      const v = gb.find((x) => x.name.includes(name));
-      if (v) return v;
-    }
-    return gb[0] || voices.find((v) => /^en/i.test(v.lang)) || null;
-  }
-
-  S.say = (text) => {
-    if (!S.voice || !text || !('speechSynthesis' in window)) return;
-    try {
-      if (speechSynthesis.speaking || speechSynthesis.pending) speechSynthesis.cancel();
-      const u = new SpeechSynthesisUtterance(text);
-      u.lang = 'en-GB';
-      u.rate = 0.88;
-      u.pitch = 1.12;
-      const v = voice();
-      if (v) u.voice = v;
-      speechSynthesis.speak(u);
-    } catch (e) { /* speech is a nice-to-have */ }
-  };
-  S.hush = () => { try { speechSynthesis.cancel(); } catch (e) { /* ignore */ } };
+  // iPad only allows sound after a tap, so the first tap calls this.
+  S.unlock = () => ac();
 })((window.IZ = window.IZ || {}));

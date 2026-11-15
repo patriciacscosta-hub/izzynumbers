@@ -27,7 +27,6 @@
     return [...set].sort((a, b) => a - b).map((v) => ({ label: String(v), value: v }));
   }
   const eq = (t) => t.map((x) => (x === '?' ? '<span class="q">?</span>' : `<span>${x}</span>`)).join('');
-  const eqSay = (t) => t.map((x, k) => ({ '+': 'add', '−': 'take away', '=': k === 1 ? 'is the same as' : 'equals', '?': 'what' }[x] || String(x))).join(' ');
   const stones = (vals, gap) => `<div class="track">${vals.map((v, k) => `<div class="stone${k === gap ? ' q' : ''}">${k === gap ? '?' : v}</div>`).join('')}</div>`;
 
   const realms = [
@@ -37,7 +36,7 @@
         const n = i < 3 ? R(1, 10) : i < 6 ? R(6, 15) : R(11, 20);
         const it = pick(IT);
         return {
-          prompt: `How many ${it.many}?`, say: `How many ${it.many} can you count? You can tap them to help you.`,
+          prompt: `How many ${it.many}?`,
           visual: A.objects(it.k, n, { tap: true }), choices: nums(n, howMany(i), 1, 20), answer: n,
         };
       },
@@ -49,9 +48,9 @@
         const vals = [n];
         for (const o of [10, -10, 1, -1, 2, -2]) { const v = n + o; if (v >= 0 && v <= 20 && vals.length < howMany(i)) vals.push(v); }
         if (Math.random() < 0.5) {
-          return { prompt: 'Which word matches this number?', say: 'Which word matches this number?', big: `<span>${n}</span>`, choices: shuffle(vals).map((v) => ({ label: WORDS[v], value: v })), answer: n, words: true };
+          return { prompt: 'Which word matches this number?', big: `<span>${n}</span>`, choices: shuffle(vals).map((v) => ({ label: WORDS[v], value: v })), answer: n, words: true };
         }
-        return { prompt: 'Which number is this word?', say: 'Read the word. Which number is it?', visual: `<div class="word-big">${WORDS[n]}</div>`, choices: vals.sort((a, b) => a - b).map((v) => ({ label: String(v), value: v })), answer: n };
+        return { prompt: 'Which number is this word?', visual: `<div class="word-big">${WORDS[n]}</div>`, choices: vals.sort((a, b) => a - b).map((v) => ({ label: String(v), value: v })), answer: n };
       },
     },
     {
@@ -68,7 +67,7 @@
           ? `<div class="stone hi">${n}</div>${A.arrow('one more')}<div class="stone q">?</div>`
           : `<div class="stone q">?</div>${A.arrow('one less').replace('class="arrow"', 'class="arrow back"')}<div class="stone hi">${n}</div>`}</div>`;
         return {
-          prompt: `What is one ${word} than ${n}?`, say: `What is one ${word} than ${n}?`, visual,
+          prompt: `What is one ${word} than ${n}?`, visual,
           choices: set.slice(0, howMany(i)).sort((a, b) => a - b).map((v) => ({ label: String(v), value: v })), answer: ans,
         };
       },
@@ -85,7 +84,6 @@
         const gap = R(1, 4), ans = seq[gap];
         return {
           prompt: back ? 'Counting backwards. Which number is missing?' : 'Which number is missing?',
-          say: (back ? 'Counting backwards. ' : '') + seq.map((v, k) => (k === gap ? 'what' : v)).join(', ') + '?',
           visual: stones(seq, gap), choices: nums(ans, howMany(i), 0, 100, shuffle([1, -1, 10, -10, 2])), answer: ans,
         };
       },
@@ -102,7 +100,7 @@
           const ch = [{ html: A.objects(it.k, a), value: 'L' }, { html: A.objects(it.k, b), value: 'R' }];
           if (i >= 2) ch.push({ label: 'The same', value: 'S', cls: 'same' });
           const q = `Which group has ${fewer ? 'fewer' : 'more'} ${it.many}?` + (i >= 2 ? ' Or are they the same?' : '');
-          return { prompt: q, say: q, choices: ch, answer: ans, pics: true };
+          return { prompt: q, choices: ch, answer: ans, pics: true };
         }
         if (i < 6) {
           const max = i < 4 ? 20 : 50, less = Math.random() < 0.5;
@@ -110,13 +108,13 @@
           let b = R(0, max);
           while (b === a) b = R(0, max);
           const q = `Which number is ${less ? 'less' : 'more'}?`;
-          return { prompt: q, say: q, choices: [a, b].map((v) => ({ label: String(v), value: v })), answer: less ? Math.min(a, b) : Math.max(a, b) };
+          return { prompt: q, choices: [a, b].map((v) => ({ label: String(v), value: v })), answer: less ? Math.min(a, b) : Math.max(a, b) };
         }
         const set = new Set();
         while (set.size < 3) set.add(R(0, 100));
         const vals = [...set], small = Math.random() < 0.5;
         const q = `Which number is the ${small ? 'smallest' : 'biggest'}?`;
-        return { prompt: q, say: q, choices: vals.map((v) => ({ label: String(v), value: v })), answer: small ? Math.min(...vals) : Math.max(...vals) };
+        return { prompt: q, choices: vals.map((v) => ({ label: String(v), value: v })), answer: small ? Math.min(...vals) : Math.max(...vals) };
       },
     },
     {
@@ -125,7 +123,7 @@
         const total = i < 5 ? 10 : 20, a = R(1, total - 1), ans = total - a, first = Math.random() < 0.5;
         const t = first ? [a, '+', '?', '=', total] : ['?', '+', a, '=', total];
         return {
-          prompt: `Make ${total}!`, say: first ? `${a} and what make ${total}?` : `What and ${a} make ${total}?`,
+          prompt: `Make ${total}!`,
           big: eq(t), visual: i < 7 ? A.tenFrame('crystal', a, total) : '', choices: nums(ans, howMany(i), 0, total), answer: ans,
         };
       },
@@ -141,7 +139,7 @@
         if (b && Math.random() < 0.5) [a, b] = [b, a];
         const it = pick(IT), s = a + b;
         return {
-          prompt: 'Add them together', say: `What is ${a} add ${b}?`, big: eq([a, '+', b, '=', '?']),
+          prompt: 'Add them together', big: eq([a, '+', b, '=', '?']),
           visual: i < 6 ? `<div class="sum-pics">${A.objects(it.k, a)}<div class="op">+</div>${A.objects(it.k, b)}</div>` : '',
           choices: nums(s, howMany(i), 0, 20), answer: s,
         };
@@ -156,7 +154,7 @@
         else { a = R(11, 20); b = R(1, a); }
         const it = pick(IT), d = a - b;
         return {
-          prompt: i < 6 ? 'Some floated away. How many are left?' : 'Take away', say: `What is ${a} take away ${b}?`,
+          prompt: i < 6 ? 'Some floated away. How many are left?' : 'Take away',
           big: eq([a, '−', b, '=', '?']), visual: i < 6 ? A.objects(it.k, a, { fade: b }) : '',
           choices: nums(d, howMany(i), 0, 20), answer: d,
         };
@@ -171,7 +169,7 @@
           'a+?': [[a, '+', '?', '=', c], b], '?+b': [['?', '+', b, '=', c], a], 'c-?': [[c, '−', '?', '=', a], b],
           '?-b': [['?', '−', b, '=', a], c], 'c=a+?': [[c, '=', a, '+', '?'], b], 'a=?-b': [[a, '=', '?', '−', b], c],
         }[pick(forms)];
-        return { prompt: 'Which number is hiding under the stone?', say: eqSay(F[0]) + '?', big: eq(F[0]), choices: nums(F[1], howMany(i), 0, 20), answer: F[1] };
+        return { prompt: 'Which number is hiding under the stone?', big: eq(F[0]), choices: nums(F[1], howMany(i), 0, 20), answer: F[1] };
       },
     },
     {
@@ -184,7 +182,7 @@
         if (type === 'groups') {
           const k = R(2, step === 10 ? 4 : step === 5 ? 4 : 6), ans = k * step;
           return {
-            prompt: `Count in ${step}s. How many altogether?`, say: `Count in ${step}s. How many ${it.many} are there altogether?`,
+            prompt: `Count in ${step}s. How many altogether?`,
             visual: `<div class="groups">${Array.from({ length: k }, () => `<div class="nest">${A.objects(it.k, step, { cls: 'tiny' })}</div>`).join('')}</div>`,
             choices: near(ans, shuffle([ans - step, ans + step, ans + 2 * step, ans + 1])), answer: ans,
           };
@@ -195,14 +193,14 @@
           const seq = [0, 1, 2, 3, 4].map((k) => start + k * step);
           const gap = R(1, 4), ans = seq[gap];
           return {
-            prompt: `Count in ${step}s. Which number is missing?`, say: `Count in ${step}s. ` + seq.map((v, k) => (k === gap ? 'what' : v)).join(', ') + '?',
+            prompt: `Count in ${step}s. Which number is missing?`,
             visual: stones(seq, gap), choices: near(ans, shuffle([ans - step, ans + step, ans + 1, ans - 1])), answer: ans,
           };
         }
         if (type === 'double') {
           const n = R(1, 10);
           return {
-            prompt: `What is double ${n}?`, say: `Double ${n} means ${n} and ${n} more. What is double ${n}?`,
+            prompt: `What is double ${n}?`,
             visual: `<div class="sum-pics">${A.objects(it.k, n)}<div class="op mirror"></div>${A.objects(it.k, n)}</div>`,
             choices: nums(2 * n, howMany(i), 0, 20), answer: 2 * n,
           };
@@ -210,7 +208,6 @@
         const each = R(2, 6), total = each * 2;
         return {
           prompt: `Share ${total} equally between ${friends}. How many each?`,
-          say: `Share ${total} ${it.many} equally between ${friends}. How many does each one get?`,
           visual: A.objects(it.k, total), choices: nums(each, howMany(i), 0, 12), answer: each,
         };
       },
@@ -229,17 +226,16 @@
           const word = parts === 2 ? 'one half' : 'one quarter';
           return {
             prompt: `Which shape has ${word} shaded?`,
-            say: `Which shape has ${word} shaded? ${parts === 2 ? 'A half is one of two equal parts.' : 'A quarter is one of four equal parts.'}`,
             choices: ch, answer: 'yes', pics: true,
           };
         }
         const it = pick(IT);
         if (type === 'halfOf') {
           const n = 2 * R(1, i < 4 ? 5 : 10);
-          return { prompt: `What is half of ${n}?`, say: `Share ${n} ${it.many} into two equal groups. What is half of ${n}?`, visual: A.objects(it.k, n), choices: nums(n / 2, howMany(i), 0, 20), answer: n / 2 };
+          return { prompt: `What is half of ${n}?`, visual: A.objects(it.k, n), choices: nums(n / 2, howMany(i), 0, 20), answer: n / 2 };
         }
         const n = pick([4, 8, 12]);
-        return { prompt: `What is a quarter of ${n}?`, say: `Share ${n} ${it.many} into four equal groups. What is a quarter of ${n}?`, visual: A.objects(it.k, n), choices: nums(n / 4, howMany(i), 0, 12), answer: n / 4 };
+        return { prompt: `What is a quarter of ${n}?`, visual: A.objects(it.k, n), choices: nums(n / 4, howMany(i), 0, 12), answer: n / 4 };
       },
     },
     {
@@ -252,9 +248,9 @@
         const others = shuffle(pool.filter((s) => s !== target && s !== clash[target])).slice(0, howMany(i) - 1);
         const all = shuffle([target, ...others]);
         if (i >= 2 && Math.random() < 0.5) {
-          return { prompt: 'What is this shape called?', say: 'What is this shape called?', visual: `<div class="pic-lg">${A.shape(target)}</div>`, choices: all.map((s) => ({ label: s, value: s })), answer: target, words: true };
+          return { prompt: 'What is this shape called?', visual: `<div class="pic-lg">${A.shape(target)}</div>`, choices: all.map((s) => ({ label: s, value: s })), answer: target, words: true };
         }
-        return { prompt: `Tap the ${target}.`, say: `Can you find the ${target}?`, choices: all.map((s) => ({ html: A.shape(s), value: s })), answer: target, pics: true };
+        return { prompt: `Tap the ${target}.`, choices: all.map((s) => ({ html: A.shape(s), value: s })), answer: target, pics: true };
       },
     },
     {
@@ -266,7 +262,7 @@
           const ans = list[(d + (after ? 1 : list.length - 1)) % list.length];
           const others = shuffle(list.filter((x) => x !== ans && x !== list[d])).slice(0, 2);
           const q = `Which ${months ? 'month' : 'day'} comes ${after ? 'after' : 'before'} ${list[d]}?`;
-          return { prompt: q, say: q, visual: `<div class="word-big sm">${list[d]}</div>`, choices: shuffle([ans, ...others]).map((x) => ({ label: x, value: x })), answer: ans, words: true };
+          return { prompt: q, visual: `<div class="word-big sm">${list[d]}</div>`, choices: shuffle([ans, ...others]).map((x) => ({ label: x, value: x })), answer: ans, words: true };
         }
         const half = i >= 2 && Math.random() < 0.5, h = R(1, 12);
         const lab = (hh, hf) => (hf ? `half past ${hh}` : `${hh} o'clock`);
@@ -274,23 +270,22 @@
         const opts = [[h, half], [h, !half], [nh, half], [ph, !half]].slice(0, howMany(i));
         const ans = lab(h, half);
         if (i >= 4) {
-          return { prompt: `Which clock shows ${ans}?`, say: `Which clock shows ${ans}?`, choices: shuffle(opts).map(([hh, hf]) => ({ html: A.clock(hh, hf ? 30 : 0), value: lab(hh, hf) })), answer: ans, pics: true };
+          return { prompt: `Which clock shows ${ans}?`, choices: shuffle(opts).map(([hh, hf]) => ({ html: A.clock(hh, hf ? 30 : 0), value: lab(hh, hf) })), answer: ans, pics: true };
         }
-        return { prompt: 'What time does the clock show?', say: 'What time does the clock show?', visual: `<div class="pic-lg">${A.clock(h, half ? 30 : 0)}</div>`, choices: shuffle(opts).map(([hh, hf]) => ({ label: lab(hh, hf), value: lab(hh, hf) })), answer: ans, words: true };
+        return { prompt: 'What time does the clock show?', visual: `<div class="pic-lg">${A.clock(h, half ? 30 : 0)}</div>`, choices: shuffle(opts).map(([hh, hf]) => ({ label: lab(hh, hf), value: lab(hh, hf) })), answer: ans, words: true };
       },
     },
     {
       id: 'money', name: "Dragon's Hoard", sub: 'Coins and money', pic: () => A.coin(10),
       gen(i) {
-        const say = (v) => (v === 100 ? 'one pound' : v === 200 ? 'two pounds' : v === 1 ? 'one penny' : `${v}p`);
         if (i < 3) {
           const pool = i < 1 ? [1, 2, 5, 10] : [1, 2, 5, 10, 20, 50, 100, 200];
           const v = pick(pool), all = shuffle([v, ...shuffle(pool.filter((x) => x !== v)).slice(0, 2)]);
-          return { prompt: `Which coin is ${A.coinName(v)}?`, say: `Which coin is ${say(v)}?`, choices: all.map((x) => ({ html: A.coin(x), value: x })), answer: v, pics: true };
+          return { prompt: `Which coin is ${A.coinName(v)}?`, choices: all.map((x) => ({ html: A.coin(x), value: x })), answer: v, pics: true };
         }
         if (i === 6) {
           const [a, b] = shuffle(pick([[5, 2], [5, 1], [20, 10], [50, 20], [100, 50], [10, 2], [200, 100]]));
-          return { prompt: 'Which coin is worth more?', say: 'Which coin is worth more? Be careful, bigger coins are not always worth more!', choices: [a, b].map((x) => ({ html: A.coin(x), value: x })), answer: Math.max(a, b), pics: true };
+          return { prompt: 'Which coin is worth more?', choices: [a, b].map((x) => ({ html: A.coin(x), value: x })), answer: Math.max(a, b), pics: true };
         }
         const n = i < 4 ? 2 : 3;
         let coins;
@@ -298,7 +293,7 @@
         coins.sort((x, y) => y - x);
         const total = coins.reduce((s, c) => s + c, 0);
         return {
-          prompt: 'How much money is here?', say: 'How much money is here? Add up the coins.',
+          prompt: 'How much money is here?',
           visual: `<div class="coins">${coins.map(A.coin).join('')}</div>`,
           choices: nums(total, howMany(i), 1, 30).map((c) => ({ label: c.value + 'p', value: c.value })), answer: total,
         };

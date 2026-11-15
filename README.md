@@ -8,7 +8,7 @@ All the artwork is hand-drawn SVG: no emoji and no image files. The look is a mi
 
 1. Open the game's web address in Safari.
 2. Tap **Share → Add to Home Screen**. It then opens full screen like an app, and keeps working offline once it has been opened.
-3. Turn the iPad's silent switch off to hear chimes and the read-aloud voice.
+3. Turn the iPad's silent switch off to hear the chimes.
 
 To play on a computer, open `index.html` through any local web server.
 
@@ -19,7 +19,6 @@ To play on a computer, open `index.html` through any local web server.
 - **Questions**: each place has 8 questions that get a little harder as you go. Your friend runs along the track at the top towards the star with every right answer.
 - **Kind feedback**: a wrong answer gives a gentle "try again". After two tries, the right answer glows so nobody gets stuck.
 - **Stars**: 3 stars for 0–1 mistakes, 2 stars for 2–3 mistakes, 1 star otherwise. The best score for each place is saved on the iPad.
-- **Read aloud**: every question is spoken in a British English voice, so early readers can play alone. The speaker button repeats the question.
 - **Counting help**: in counting questions you can tap objects to light them up one by one.
 
 ## National Curriculum coverage (Year 1)
@@ -48,7 +47,7 @@ To play on a computer, open `index.html` through any local web server.
 - `js/art.js`: every illustration (unicorn, dragon, forest, world map, coins, clock, shapes, counters)
 - `js/realms.js`: the question makers, one per place on the map
 - `js/game.js`: the map, the journey, play flow and saved stars
-- `js/sound.js`: chimes and the read-aloud voice
+- `js/sound.js`: chimes
 - `js/fx.js`: floating lights and sparkle bursts
 - `sw.js`, `manifest.webmanifest`: offline play and Add to Home Screen
 

@@ -6,14 +6,7 @@
   // ---------- shared gradients & filters (referenced by every illustration) ----------
   A.defs = `
 <svg id="art-defs" width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false"><defs>
-  <linearGradient id="g-uni-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#dcd4ff"/></linearGradient>
-  <linearGradient id="g-uni-leg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#d8cffb"/><stop offset="1" stop-color="#b3a6ee"/></linearGradient>
-  <linearGradient id="g-uni-mane" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#a8f4ff"/><stop offset=".5" stop-color="#b59bff"/><stop offset="1" stop-color="#ff9fd6"/></linearGradient>
   <linearGradient id="g-horn" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#ffcf8a"/><stop offset="1" stop-color="#fffbea"/></linearGradient>
-  <linearGradient id="g-dra-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6c60e2"/><stop offset="1" stop-color="#323a96"/></linearGradient>
-  <linearGradient id="g-dra-snout" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6e64da"/><stop offset="1" stop-color="#3d3b9c"/></linearGradient>
-  <linearGradient id="g-dra-belly" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe6bf"/><stop offset="1" stop-color="#ffa86a"/></linearGradient>
-  <linearGradient id="g-dra-wing" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#7b63e0"/><stop offset="1" stop-color="#c8b6ff"/></linearGradient>
   <radialGradient id="g-eye" cx=".45" cy=".4" r=".6"><stop offset="0" stop-color="#fff3c8"/><stop offset=".45" stop-color="#ffb347"/><stop offset="1" stop-color="#ff6a2b"/></radialGradient>
   <radialGradient id="g-ember" cx=".5" cy=".65" r=".6"><stop offset="0" stop-color="#fff7d6"/><stop offset=".5" stop-color="#ffb347"/><stop offset="1" stop-color="#ff5e3a"/></radialGradient>
   <radialGradient id="g-orb"><stop offset="0" stop-color="#ffffff"/><stop offset=".3" stop-color="#d4f8ff"/><stop offset=".62" stop-color="#7fdcff" stop-opacity=".45"/><stop offset="1" stop-color="#7fdcff" stop-opacity="0"/></radialGradient>
@@ -221,83 +214,155 @@
 
 </svg>`;
   };
-
   // ---------- Luma the unicorn ----------
+  // One light source (upper right). Shadows and highlights are clipped to each body part
+  // so they never spill past the silhouette.
+  const U_BODY = 'M70,128 C70,108 92,100 116,102 C142,104 160,112 160,132 C161,152 146,166 118,166 C92,166 70,152 70,128 Z';
+  const U_HEAD = 'M146,62 C146,40 164,30 182,32 C200,34 212,48 212,64 C212,72 216,80 218,88 C220,100 210,110 196,110 C186,110 178,106 170,104 C154,100 146,82 146,62 Z';
+  const U_HORN = 'M181,38 L203,3 L193,41 Z';
+  const U_NECK = 'M126,112 C130,96 140,84 154,80 L178,98 C170,112 162,126 158,138 C146,136 132,126 126,112 Z';
+  const hoof = (x, y, w, fill) => `<path d="M${x},${y} h${w} v5 a3.5,3.5 0 0 1 -3.5,3.5 h${7 - w} a3.5,3.5 0 0 1 -3.5,-3.5 Z" fill="${fill}"/>`;
   A.unicorn = () => `
 <svg class="char unicorn" viewBox="0 0 240 220" aria-hidden="true">
+  <ellipse cx="118" cy="205" rx="64" ry="6" fill="#0b0624" opacity=".35"/>
   <g class="u-tail">
-    <path d="M66,112 C34,100 16,126 24,156 C28,170 22,184 10,192 C38,198 58,180 56,158 C55,142 62,130 74,124 Z" fill="url(#g-uni-mane)"/>
-    <path d="M62,116 C44,118 34,138 40,160" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="3" stroke-linecap="round"/>
+    <path d="M76,122 C58,110 38,116 33,135 C28,154 40,168 29,186 C50,183 62,166 60,150 C59,139 65,131 78,131 Z" fill="url(#u-mane-a)"/>
+    <path d="M75,128 C61,128 52,140 54,154 C56,167 51,177 44,185 C61,180 68,165 66,151 C65,141 70,135 79,135 Z" fill="url(#u-mane-b)"/>
+    <path d="M70,124 C54,122 44,134 42,148" fill="none" stroke="#fff" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
   </g>
-  <rect x="78" y="138" width="15" height="60" rx="7.5" fill="url(#g-uni-leg)"/>
-  <rect x="136" y="138" width="15" height="60" rx="7.5" fill="url(#g-uni-leg)"/>
-  <rect x="78" y="188" width="15" height="11" rx="5" fill="#9d86ee"/>
-  <rect x="136" y="188" width="15" height="11" rx="5" fill="#9d86ee"/>
-  <ellipse cx="112" cy="128" rx="58" ry="36" fill="url(#g-uni-body)"/>
-  <ellipse cx="98" cy="112" rx="32" ry="9" fill="#fff" opacity=".7"/>
-  <rect x="94" y="142" width="16" height="62" rx="8" fill="url(#g-uni-body)"/>
-  <rect x="152" y="142" width="16" height="62" rx="8" fill="url(#g-uni-body)"/>
-  <rect x="94" y="193" width="16" height="11" rx="5" fill="#b59bff"/>
-  <rect x="152" y="193" width="16" height="11" rx="5" fill="#b59bff"/>
-  <path d="M138,112 C144,88 154,70 166,56 L198,70 C188,90 180,112 172,140 C158,136 146,128 138,112 Z" fill="url(#g-uni-body)"/>
+  <path d="M92,140 C92,154 98,164 99,174 L99,188 L110,188 C110,180 111,170 113,160 C115,150 114,142 110,136 Z" fill="#b9addf"/>
+  ${hoof(97.5, 186, 14, '#7f6cc9')}
+  <path d="M144,140 C146,154 150,166 151,176 L151,188 L162,188 C162,178 162,166 162,154 C162,146 160,140 156,136 Z" fill="#b9addf"/>
+  ${hoof(149.5, 186, 14, '#7f6cc9')}
+  <path d="${U_BODY}" fill="url(#u-coat)"/>
+  <g clip-path="url(#u-clip-body)">
+    <ellipse cx="104" cy="172" rx="60" ry="24" fill="#c7bcf0" opacity=".8"/>
+    <ellipse cx="66" cy="140" rx="16" ry="30" fill="#d6cdf6" opacity=".7"/>
+    <ellipse cx="124" cy="101" rx="38" ry="8" fill="#fff"/>
+  </g>
+  <path d="M76,136 C74,152 82,160 84,170 C85,178 85,186 84,194 L98,194 C98,184 99,172 102,160 C105,150 104,140 100,134 Z" fill="url(#u-leg)"/>
+  ${hoof(83, 192, 16, '#9a84ea')}
+  <path d="M128,140 C129,156 133,168 133,180 L133,194 L147,194 C147,182 148,168 151,156 C153,146 151,140 146,136 Z" fill="url(#u-leg)"/>
+  ${hoof(132, 192, 16, '#9a84ea')}
+  <path d="${U_NECK}" fill="url(#u-coat)"/>
+  <g class="u-mane">
+    <path d="M168,34 C146,30 128,46 130,68 C132,86 122,100 108,110 C126,116 144,106 150,92 C156,78 156,60 172,44 Z" fill="url(#u-mane-a)"/>
+    <path d="M174,36 C158,38 146,52 148,70 C149,84 142,96 132,106 C148,106 159,96 161,82 C163,66 166,52 180,42 Z" fill="url(#u-mane-b)"/>
+    <path d="M162,42 C152,52 150,66 148,82" fill="none" stroke="#fff" stroke-opacity=".6" stroke-width="2" stroke-linecap="round"/>
+  </g>
   <g class="u-head">
-    <path d="M170,44 L172,20 L184,40 Z" fill="#fff"/>
-    <path d="M173,40 L174,27 L180,39 Z" fill="#ffc6e8"/>
-    <ellipse cx="184" cy="60" rx="28" ry="22" fill="#fff"/>
-    <ellipse cx="206" cy="76" rx="18" ry="14" fill="#f4f0ff"/>
-    <path d="M186,41 L205,4 L197,45 Z" fill="url(#g-horn)" filter="url(#f-glow)"/>
-    <path d="M190,33 L199,30 M193,25 L201,22 M196,16 L203,13" stroke="#e8b96b" stroke-width="1.8" stroke-linecap="round"/>
-    <g class="blink"><ellipse cx="192" cy="59" rx="5.5" ry="7" fill="#2a1b5e"/><circle cx="194" cy="56" r="2.2" fill="#fff"/></g>
-    <path d="M197,53 l5,-3 M198,57 l6,-1" stroke="#2a1b5e" stroke-width="1.6" stroke-linecap="round"/>
-    <ellipse cx="200" cy="70" rx="6" ry="4" fill="#ffb3d9" opacity=".65"/>
-    <ellipse cx="215" cy="75" rx="2" ry="2.8" fill="#9a86d8"/>
-    <path d="M205,84 q6,4 12,-1" fill="none" stroke="#9a86d8" stroke-width="2" stroke-linecap="round"/>
+    <path d="M160,42 C157,28 161,17 168,10 C175,18 177,30 175,42 Z" fill="#f1edff"/>
+    <path d="M163.5,38 C162.5,29 165,22 168,17 C171.5,23 172,31 171,38 Z" fill="#ffbfe0"/>
+    <path d="${U_HEAD}" fill="url(#u-coat)"/>
+    <g clip-path="url(#u-clip-head)">
+      <ellipse cx="160" cy="104" rx="34" ry="18" fill="#cfc3f3" opacity=".85"/>
+      <ellipse cx="206" cy="95" rx="20" ry="15" fill="#ffd6ec" opacity=".75"/>
+      <ellipse cx="190" cy="34" rx="26" ry="7" fill="#fff"/>
+    </g>
+    <path d="M207,88 q3,-2.5 6,0.5" fill="none" stroke="#9b86d6" stroke-width="2" stroke-linecap="round"/>
+    <path d="M197,101 q7,5 14,-1" fill="none" stroke="#8d78cf" stroke-width="2.2" stroke-linecap="round"/>
+    <ellipse cx="194" cy="83" rx="7" ry="4.5" fill="#ff9fcf" opacity=".5"/>
+    <g class="blink">
+      <ellipse cx="184" cy="66" rx="8" ry="10.5" fill="url(#u-eye)"/>
+      <ellipse cx="184" cy="71" rx="5.5" ry="4" fill="#7d6ae0" opacity=".55"/>
+      <circle cx="187" cy="61.5" r="3.3" fill="#fff"/><circle cx="181" cy="71.5" r="1.5" fill="#fff" opacity=".85"/>
+    </g>
+    <path d="M175.5,58 C179,53 188,52 193,57" fill="none" stroke="#22164f" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M192,56 l5,-3.5 M193.5,59 l6,-1.5" stroke="#22164f" stroke-width="2" stroke-linecap="round"/>
+    <circle cx="194" cy="20" r="20" fill="url(#u-horn-glow)"/>
+    <path d="${U_HORN}" fill="url(#g-horn)"/>
+    <g clip-path="url(#u-clip-horn)" stroke="#e2b263" stroke-width="2" stroke-linecap="round">
+      <path d="M180,33 L199,28 M183,25 L201,20 M187,17 L203,12 M191,10 L205,6"/>
+    </g>
+    <path d="M174,34 C186,26 200,30 202,42 C194,38 186,40 180,50 C176,46 172,40 174,34 Z" fill="url(#u-mane-b)"/>
   </g>
-  <path class="u-mane" d="M172,40 C152,38 140,58 146,76 C132,82 130,100 138,112 C128,118 130,132 142,140 C150,122 158,102 166,86 C172,72 178,56 188,44 Z" fill="url(#g-uni-mane)"/>
-  <path d="M180,38 C168,42 166,54 173,60 C177,51 183,45 190,43 Z" fill="url(#g-uni-mane)"/>
   <g class="sparkle" fill="#fff">
-    <path d="M216,18 l2,6 6,2 -6,2 -2,6 -2,-6 -6,-2 6,-2Z"/>
+    <path d="M218,16 l2,6 6,2 -6,2 -2,6 -2,-6 -6,-2 6,-2Z"/>
     <path d="M224,44 l1.2,3.6 3.6,1.2 -3.6,1.2 -1.2,3.6 -1.2,-3.6 -3.6,-1.2 3.6,-1.2Z"/>
   </g>
 </svg>`;
 
   // ---------- Ember the dragon ----------
+  const D_BODY = 'M84,150 C84,118 104,98 128,98 C152,98 168,118 168,148 C168,180 150,200 126,200 C102,200 84,182 84,150 Z';
+  const D_BELLY = 'M112,124 C122,116 142,118 150,130 C158,146 156,176 144,190 C134,198 118,196 110,186 C100,170 100,136 112,124 Z';
+  const D_HEAD = 'M114,74 C114,48 132,32 154,32 C176,32 190,46 192,60 C204,62 216,72 216,86 C216,101 203,110 187,110 C173,110 161,108 149,106 C128,104 114,94 114,74 Z';
   A.dragon = () => `
 <svg class="char dragon" viewBox="0 0 240 220" aria-hidden="true">
+  <ellipse cx="122" cy="206" rx="60" ry="6" fill="#0b0624" opacity=".35"/>
   <g class="d-tail">
-    <path d="M76,166 C46,180 20,164 20,136 C20,122 28,110 40,104" fill="none" stroke="#2f3488" stroke-width="18" stroke-linecap="round"/>
-    <path d="M38,108 C26,96 32,78 48,70 C46,80 56,86 54,98 C53,104 46,110 38,108 Z" fill="url(#g-ember)" filter="url(#f-glow)"/>
+    <path d="M98,178 C72,194 40,188 31,164 C26,150 33,138 45,138" fill="none" stroke="#3a3ca8" stroke-width="15" stroke-linecap="round"/>
+    <path d="M98,178 C72,194 40,188 31,164" fill="none" stroke="#5458d0" stroke-width="5" stroke-linecap="round" opacity=".6" transform="translate(1 -4)"/>
+    <path d="M46,143 C34,135 34,118 47,103 C49,115 60,119 58,131 C57,139 52,144 46,143 Z" fill="url(#g-ember)" filter="url(#f-glow)"/>
+    <path d="M47,139 C42,134 42,125 48,117 C49,124 54,127 53,132 C52,136 50,139 47,139 Z" fill="#fff4cf"/>
   </g>
-  <path class="d-wing-back" d="M104,104 C100,76 88,58 70,48 C76,62 76,70 74,78 C82,78 88,84 88,92 Z" fill="#4b3aa8"/>
-  <ellipse cx="88" cy="186" rx="17" ry="10" fill="#1f2566"/>
-  <ellipse cx="108" cy="142" rx="50" ry="45" fill="url(#g-dra-body)"/>
-  <g fill="#9ff0ff" filter="url(#f-glow)">
-    <path d="M58,134 L45,123 L63,120 Z"/><path d="M67,116 L57,100 L77,106 Z"/><path d="M83,103 L79,86 L95,98 Z"/>
+  <path class="d-wing-back" d="M120,104 C117,84 108,66 92,56 C94,66 93,72 90,78 C98,78 103,82 104,88 C110,88 114,94 114,100 Z" fill="#463fae"/>
+  <g fill="url(#d-spine)">
+    <path d="M84,138 Q70,124 72,116 Q86,118 96,126 Z"/>
+    <path d="M92,120 Q82,104 86,96 Q98,102 104,112 Z"/>
+    <path d="M106,106 Q102,90 108,82 Q116,92 118,102 Z"/>
+  </g>
+  <path d="M92,196 C92,188 98,186 108,186 C118,186 122,192 122,198 C122,204 116,206 106,206 C98,206 92,203 92,196 Z" fill="#2a2a7e"/>
+  <path d="${D_BODY}" fill="url(#d-body)"/>
+  <g clip-path="url(#d-clip-body)">
+    <ellipse cx="92" cy="162" rx="26" ry="52" fill="#25247a" opacity=".6"/>
+    <ellipse cx="146" cy="102" rx="28" ry="9" fill="#9a9cff" opacity=".55"/>
+  </g>
+  <path d="${D_BELLY}" fill="url(#d-belly)"/>
+  <g clip-path="url(#d-clip-belly)">
+    <path d="M100,140 Q130,148 160,138 M100,156 Q130,164 160,154 M100,172 Q130,180 160,170" fill="none" stroke="#e28a52" stroke-opacity=".45" stroke-width="2"/>
+    <ellipse cx="106" cy="160" rx="10" ry="40" fill="#e88f58" opacity=".35"/>
   </g>
   <g class="d-wing">
-    <path d="M96,106 C88,72 66,46 34,36 C44,52 46,62 44,72 C54,70 62,74 64,84 C72,82 80,88 80,98 Z" fill="url(#g-dra-wing)" stroke="#d8ccff" stroke-width="2" stroke-linejoin="round"/>
-    <path d="M96,106 C80,80 60,58 34,36 M94,104 C76,88 60,76 44,72 M94,104 C84,94 74,86 64,84" fill="none" stroke="#efe9ff" stroke-opacity=".7" stroke-width="2"/>
+    <path d="M106,114 C98,92 82,72 58,62 C62,74 62,82 57,90 C68,90 75,94 77,103 C86,101 94,106 96,114 Z" fill="url(#d-wing)"/>
+    <path d="M106,114 C94,94 78,76 58,62 M100,112 C88,100 74,92 57,90 M98,114 C92,108 84,104 77,103" fill="none" stroke="#4a3fb2" stroke-width="2.2" stroke-linecap="round"/>
   </g>
-  <ellipse cx="126" cy="152" rx="28" ry="31" fill="url(#g-dra-belly)"/>
-  <path d="M105,138 q21,8 42,0 M102,152 q24,9 48,0 M106,166 q20,8 40,0" fill="none" stroke="#e98a4f" stroke-opacity=".55" stroke-width="2" stroke-linecap="round"/>
-  <ellipse cx="136" cy="188" rx="19" ry="11" fill="#2b3388"/>
-  <g fill="#f4e6ff"><circle cx="148" cy="194" r="3"/><circle cx="141" cy="196" r="3"/><circle cx="154" cy="190" r="3"/></g>
-  <path d="M150,128 q16,6 12,22" fill="none" stroke="#3f46a8" stroke-width="11" stroke-linecap="round"/>
+  <path d="M128,196 C128,188 136,184 148,184 C160,184 166,190 166,198 C166,204 160,206 148,206 C136,206 128,204 128,196 Z" fill="#3a3ca8"/>
+  <g fill="#f4ecff"><ellipse cx="152" cy="204" rx="3" ry="2.2"/><ellipse cx="159" cy="202.5" rx="3" ry="2.2"/><ellipse cx="164.5" cy="199" rx="2.6" ry="2"/></g>
+  <path d="M148,136 C160,138 167,148 165,160 C164,167 156,168 153,161 C151,154 149,148 144,145 Z" fill="#4446b8"/>
   <g class="d-head">
-    <path d="M136,52 C128,34 116,26 102,24 C112,36 116,46 120,60 Z" fill="#efe2ff"/>
-    <path d="M158,46 C160,30 154,18 144,10 C148,24 146,36 144,50 Z" fill="#efe2ff"/>
-    <path d="M124,72 L104,62 L118,92 Z" fill="#8d7cf0"/>
-    <circle cx="154" cy="80" r="36" fill="url(#g-dra-body)"/>
-    <ellipse cx="186" cy="94" rx="25" ry="18" fill="url(#g-dra-snout)"/>
-    <ellipse cx="201" cy="87" rx="2.6" ry="2" fill="#141845"/>
-    <ellipse cx="191" cy="85" rx="2.2" ry="1.8" fill="#141845"/>
-    <path d="M176,104 q12,7 24,0" fill="none" stroke="#141845" stroke-width="2.6" stroke-linecap="round"/>
-    <path d="M183,106 l3,5 3,-4 Z" fill="#fff"/>
-    <ellipse cx="176" cy="94" rx="6" ry="3.5" fill="#ff9fc6" opacity=".45"/>
-    <g fill="#9ff0ff" opacity=".85"><circle cx="134" cy="68" r="2.4"/><circle cx="130" cy="79" r="2"/><circle cx="138" cy="88" r="2.2"/></g>
-    <g class="blink"><circle cx="163" cy="71" r="12.5" fill="url(#g-eye)" filter="url(#f-glow)"/><ellipse cx="165" cy="72" rx="3.6" ry="7" fill="#2a0f1a"/><circle cx="159" cy="65" r="3.2" fill="#fff"/></g>
+    <path d="M132,44 C124,32 112,26 100,26 C110,32 118,42 122,54 Z" fill="#b9a7ea"/>
+    <path d="M124,72 C110,64 98,66 92,74 C104,76 112,82 118,90 Z" fill="#7b6cf0"/>
+    <path d="${D_HEAD}" fill="url(#d-body)"/>
+    <g clip-path="url(#d-clip-head)">
+      <ellipse cx="150" cy="114" rx="56" ry="16" fill="#25247a" opacity=".55"/>
+      <ellipse cx="200" cy="80" rx="18" ry="14" fill="#7579f0" opacity=".55"/>
+      <ellipse cx="160" cy="36" rx="30" ry="8" fill="#9a9cff" opacity=".6"/>
+    </g>
+    <path d="M146,40 C142,24 134,12 122,6 C138,8 154,20 160,36 Z" fill="url(#d-horn)"/>
+    <path d="M204,79 q3,-2 6,0" fill="none" stroke="#14134a" stroke-width="2.4" stroke-linecap="round"/>
+    <path d="M176,100 C184,106 198,107 208,100" fill="none" stroke="#14134a" stroke-width="2.6" stroke-linecap="round"/>
+    <path d="M186,104 l2.5,5 2.5,-4.3 Z" fill="#fff"/>
+    <ellipse cx="184" cy="90" rx="7" ry="4" fill="#ff9fc6" opacity=".4"/>
+    <g fill="#9ff0ff" filter="url(#f-glow)"><circle cx="136" cy="70" r="2.2"/><circle cx="131" cy="80" r="1.8"/><circle cx="139" cy="88" r="2"/></g>
+    <g class="blink">
+      <ellipse cx="166" cy="68" rx="11" ry="13" fill="url(#g-eye)"/>
+      <ellipse cx="168" cy="69" rx="3.4" ry="8" fill="#2a0f1a"/>
+      <circle cx="162" cy="62" r="3.6" fill="#fff"/><circle cx="171" cy="76" r="1.6" fill="#fff" opacity=".85"/>
+    </g>
+    <path d="M154,61 C158,52 172,51 178.5,59" fill="none" stroke="#14134a" stroke-width="3" stroke-linecap="round"/>
   </g>
 </svg>`;
+
+  // Character gradients and the clip shapes used for their shading.
+  A.defs = A.defs.replace('</defs>', `
+  <linearGradient id="u-coat" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffffff"/><stop offset="1" stop-color="#ebe6ff"/></linearGradient>
+  <linearGradient id="u-leg" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#f3f0ff"/><stop offset="1" stop-color="#d7cefa"/></linearGradient>
+  <linearGradient id="u-mane-a" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#6fcfff"/><stop offset=".5" stop-color="#8f7cf6"/><stop offset="1" stop-color="#c77ee8"/></linearGradient>
+  <linearGradient id="u-mane-b" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#c2f6ff"/><stop offset=".5" stop-color="#c7b5ff"/><stop offset="1" stop-color="#ffb0d8"/></linearGradient>
+  <linearGradient id="u-eye" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#160d38"/><stop offset="1" stop-color="#3b2c88"/></linearGradient>
+  <radialGradient id="u-horn-glow"><stop offset="0" stop-color="#fff6d6" stop-opacity=".85"/><stop offset="1" stop-color="#ffe2a8" stop-opacity="0"/></radialGradient>
+  <linearGradient id="d-body" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#6468ea"/><stop offset="1" stop-color="#3a3cae"/></linearGradient>
+  <linearGradient id="d-belly" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#ffe8c4"/><stop offset="1" stop-color="#ffb07a"/></linearGradient>
+  <linearGradient id="d-wing" x1="1" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#7f6ef0"/><stop offset="1" stop-color="#cbbcff"/></linearGradient>
+  <linearGradient id="d-horn" x1="0" y1="1" x2="1" y2="0"><stop offset="0" stop-color="#d4c4f6"/><stop offset="1" stop-color="#ffffff"/></linearGradient>
+  <linearGradient id="d-spine" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#5fc8f0"/><stop offset="1" stop-color="#d4fcff"/></linearGradient>
+  <clipPath id="u-clip-body"><path d="${U_BODY}"/></clipPath>
+  <clipPath id="u-clip-head"><path d="${U_HEAD}"/></clipPath>
+  <clipPath id="u-clip-horn"><path d="${U_HORN}"/></clipPath>
+  <clipPath id="d-clip-body"><path d="${D_BODY}"/></clipPath>
+  <clipPath id="d-clip-belly"><path d="${D_BELLY}"/></clipPath>
+  <clipPath id="d-clip-head"><path d="${D_HEAD}"/></clipPath>
+</defs>`);
 
   // ---------- counting objects (60 x 60) ----------
   const ITEMS = {
@@ -443,7 +508,6 @@
   A.icon = {
     home: ic(`<path d="M3.5 11 L12 3.8 L20.5 11 M6 9.6 V20 H10 V14.5 H14 V20 H18 V9.6" ${sk}/>`),
     map: ic(`<path d="M3.5 6.5 L9 4 L15 6.5 L20.5 4 V17.5 L15 20 L9 17.5 L3.5 20 Z M9 4 V17.5 M15 6.5 V20" ${sk}/>`),
-    speak: ic(`<path d="M4 9.5 H7.5 L12.5 5.5 V18.5 L7.5 14.5 H4 Z" fill="currentColor"/><path d="M15.5 9 C17 10.6 17 13.4 15.5 15 M18 6.5 C21.2 9.6 21.2 14.4 18 17.5" ${sk}/>`),
     note: ic(`<path d="M9 17.5 V6 L19 4 V15.5" ${sk}/><circle cx="6.6" cy="17.6" r="2.6" fill="currentColor"/><circle cx="16.6" cy="15.6" r="2.6" fill="currentColor"/>`),
     off: ic(`<path d="M4 4 L20 20" ${sk}/>`),
   };
