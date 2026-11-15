@@ -219,10 +219,6 @@
   ${place(A.dragon(), 1470, 30, 120, true)}
   ${place(A.dragon(), 1640, 630, 150, true)}
 
-  <g font-family="ui-rounded, system-ui, sans-serif" font-weight="800" text-anchor="middle">
-    <text x="380" y="120" font-size="54" fill="#fff" stroke="#2a1b5e" stroke-width="8" paint-order="stroke">Unicorn Meadows</text>
-    <text x="1975" y="205" font-size="50" text-anchor="end" fill="#ffe6c8" stroke="#2a1b5e" stroke-width="8" paint-order="stroke">Dragon Peaks</text>
-  </g>
 </svg>`;
   };
 
